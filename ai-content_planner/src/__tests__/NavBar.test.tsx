@@ -2,7 +2,7 @@
 import { render, screen } from '@testing-library/react';
 import NavBar from '@/components/NavBar';
 import { useUser } from '@/contexts/UserContext';
-import userEvent from "@testing-library/user-event";
+import userEvent from '@testing-library/user-event';
 
 jest.mock('@/contexts/UserContext', () => ({
     useUser: jest.fn(),
@@ -21,12 +21,23 @@ describe('NavBar', () => {
         expect(screen.queryByText(/admin panel/i)).not.toBeInTheDocument();
     });
 
-    it('toggles hamburger menu on mobile', () => {
+    it('toggles hamburger menu on mobile', async () => {
         (useUser as jest.Mock).mockReturnValue({ user: { role: 'user' } });
-        window.innerWidth = 500; // Simulate mobile
+
+        // Properly mock innerWidth
+        Object.defineProperty(window, 'innerWidth', {
+            writable: true,
+            configurable: true,
+            value: 500,
+        });
+
+        // Trigger resize event
+        window.dispatchEvent(new Event('resize'));
+
         render(<NavBar />);
         const hamburger = screen.getByRole('button', { name: /menu/i });
-        userEvent.click(hamburger);
+        await userEvent.click(hamburger);
+
         expect(screen.getByRole('navigation')).toHaveClass('block');
     });
 });

@@ -1,7 +1,7 @@
 // src/__tests__/ContentForm.test.tsx
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { http, HttpResponse } from 'msw';
+import { rest } from 'msw'; // <-- use rest here
 import { server } from '@/__mocks__/msw/server';
 import ContentForm from '@/components/ContentForm';
 import { supabase } from '@/lib/superbase';
@@ -46,8 +46,11 @@ describe('ContentForm', () => {
 
     it('fetches AI suggestions', async () => {
         server.use(
-            http.post('*/api/ai-suggestions', () => {
-                return HttpResponse.json(['Suggested post 1', 'Suggested post 2']);
+            rest.post('*/api/ai-suggestions', (req, res, ctx) => {
+                return res(
+                    ctx.status(200),
+                    ctx.json(['Suggested post 1', 'Suggested post 2'])
+                );
             })
         );
 

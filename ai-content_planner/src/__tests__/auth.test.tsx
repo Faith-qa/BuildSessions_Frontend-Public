@@ -1,7 +1,7 @@
 // src/__tests__/auth.test.tsx
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { http, HttpResponse } from 'msw';
+import { rest } from 'msw'; // <-- use rest here, not http
 import { server } from '@/__mocks__/msw/server';
 import LoginPage from '@/app/auth/login/page';
 import { supabase } from '@/lib/superbase';
@@ -37,8 +37,11 @@ describe('LoginPage', () => {
 
     it('displays error on failed login', async () => {
         server.use(
-            http.post('*/auth/v1/token', () => {
-                return HttpResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+            rest.post('*/auth/v1/token', (req, res, ctx) => {
+                return res(
+                    ctx.status(401),
+                    ctx.json({ error: 'Invalid credentials' })
+                );
             })
         );
 
