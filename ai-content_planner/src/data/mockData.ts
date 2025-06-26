@@ -1,33 +1,27 @@
-export interface User {
-    id: string;
-    email: string;
-    role: 'admin' | 'user';
-    name: string;
-}
-
-export interface Post {
-    id: string;
-    content: string;
-    scheduledDate: string; // ISO date string
-    platform: 'twitter' | 'linkedin' | 'instagram';
-}
-
-export interface Analytics {
-    postId: string;
-    views: number;
-    likes: number;
-    shares: number;
-}
-
-export const initialUsers: User[] = [
-    { id: '1', email: 'admin@example.com', role: 'admin', name: 'Admin User' },
-    { id: '2', email: 'user@example.com', role: 'user', name: 'Regular User' },
+// Mock data for initial in-memory state (resets on refresh)
+export const users = [
+    { id: 1, email: 'admin@example.com', name: 'Admin User', password: 'admin123' },
+    { id: 2, email: 'user@example.com', name: 'Test User', password: 'user123' },
 ];
 
-export const initialPosts: Post[] = [
-    { id: 'p1', content: 'First post!', scheduledDate: '2025-06-20T10:00:00Z', platform: 'twitter' },
+export const posts = [
+    {
+        id: 1,
+        title: 'First Content Plan',
+        content: 'This is a sample content plan.',
+        scheduledDate: '2025-07-01T10:00:00Z',
+        platform: 'twitter',
+    },
+    {
+        id: 2,
+        title: 'Second Content Plan',
+        content: 'Another content plan example.',
+        scheduledDate: '2025-07-02T12:00:00Z',
+        platform: 'linkedin',
+    },
 ];
 
-export const initialAnalytics: Analytics[] = [
-    { postId: 'p1', views: 100, likes: 20, shares: 5 },
+export const analytics = [
+    { postId: 1, views: 100, likes: 10, shares: 5 },
+    { postId: 2, views: 150, likes: 15, shares: 8 },
 ];
